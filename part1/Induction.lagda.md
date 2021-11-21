@@ -901,9 +901,17 @@ for all naturals `m`, `n`, and `p`.
 *-identityʳ zero = refl
 *-identityʳ (suc m) = *-identityʳ m
 
+*-succ : ∀ (m n : ℕ) → m * suc n ≡ m + m * n
+*-succ zero n = refl
+*-succ (suc m) n rewrite *-succ m n | sym (+-assoc n m (m * n)) | sym (+-assoc m n (m * n)) | +-comm n m = cong suc refl
+
+*-comm : ∀ (m n : ℕ) → m * n ≡ n * m
+*-comm zero n rewrite *-identityʳ n = refl
+*-comm (suc m) n rewrite *-succ n m | *-comm m n = refl
+
 *-assoc : ∀ (m n p : ℕ) → (m * n) * p ≡ m * (n * p)
 *-assoc m zero p rewrite *-identityʳ m = refl
-*-assoc m (suc n) p = {!!}
+*-assoc m (suc n) p rewrite *-succ m n | *-comm m (p + n * p) | *-distrib-+ m (m * n) p | *-distrib-+ p (n * p) m | *-comm m p | *-comm (n * p) m | *-assoc m n p = refl
 ```
 
 
